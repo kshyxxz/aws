@@ -22,7 +22,7 @@ jobs:
 
       - name: Upload files to S3
         run: |
-           aws s3 sync s3-123/ s3://${{ secrets.S3_BUCKET }}/s3-123/ \
+           aws s3 sync /aws s3://${{ secrets.S3_BUCKET }}/aws \
             --delete \
             --exclude ".git/*" \
             --exclude ".github/*"
