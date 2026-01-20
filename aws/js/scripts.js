@@ -32,6 +32,10 @@
 	const navToggle = document.getElementById("navToggle");
 	const navList = document.getElementById("navList");
 	const themeToggle = document.getElementById("themeToggle");
+	const subscribeForm = document.getElementById("subscribeForm");
+	const subscribeEmail = document.getElementById("subscribeEmail");
+	const subscribeMsg = document.getElementById("subscribeMsg");
+	const subCountEl = document.getElementById("subCount");
 
 	// ===== STATE =====
 	let posts = [];
@@ -50,6 +54,24 @@
 	// ===== STORAGE =====
 	function save() {
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+	}
+
+	// subscribers storage
+	function loadSubscribers() {
+		const raw = localStorage.getItem(SUB_KEY);
+		return raw ? JSON.parse(raw) : [];
+	}
+
+	function saveSubscribers(list) {
+		localStorage.setItem(SUB_KEY, JSON.stringify(list));
+	}
+
+	function updateSubCount() {
+		const list = loadSubscribers();
+		if (subCountEl)
+			subCountEl.textContent = list.length
+				? `${list.length} subscriber${list.length > 1 ? "s" : ""}`
+				: "";
 	}
 
 	function load() {
@@ -147,12 +169,65 @@
 		localStorage.setItem(THEME_KEY, t);
 	});
 
+	// newsletter subscribe handler
+	subscribeForm?.addEventListener("submit", (e) => {
+		e.preventDefault();
+		const email = (subscribeEmail?.value || "").trim().toLowerCase();
+		if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+			if (subscribeMsg) {
+				subscribeMsg.textContent =
+					"Please enter a valid email address.";
+				subscribeMsg.classList.remove("subscribe-success");
+				subscribeMsg.classList.add("subscribe-error");
+			}
+			return;
+		}
+		const list = loadSubscribers();
+		if (list.includes(email)) {
+			if (subscribeMsg) {
+				subscribeMsg.textContent = "You're already subscribed.";
+				subscribeMsg.classList.remove("subscribe-error");
+				subscribeMsg.classList.add("subscribe-success");
+			}
+			return;
+		}
+		list.push(email);
+		saveSubscribers(list);
+		if (subscribeMsg) {
+			subscribeMsg.textContent = "Thanks — you're subscribed!";
+			subscribeMsg.classList.remove("subscribe-error");
+			subscribeMsg.classList.add("subscribe-success");
+		}
+		subscribeEmail.value = "";
+		updateSubCount();
+		setTimeout(() => {
+			if (subscribeMsg) {
+				subscribeMsg.textContent = "";
+				subscribeMsg.classList.remove(
+					"subscribe-success",
+					"subscribe-error",
+				);
+			}
+		}, 4000);
+	});
+
 	window.addEventListener("hashchange", handleRoute);
 
 	// ===== INIT =====
 	function init() {
+		// restore saved theme (if any)
+		const savedTheme = localStorage.getItem(THEME_KEY);
+		if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+
 		load();
 		handleRoute();
+
+		// subscriber count
+		updateSubCount();
+
+		// populate current year in footer
+		const yearEl = document.getElementById("year");
+		if (yearEl) yearEl.textContent = new Date().getFullYear();
 	}
 
 	document.addEventListener("DOMContentLoaded", init);

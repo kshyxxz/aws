@@ -233,16 +233,32 @@
 					</p>
 				</div>
 				<div class="footer-center">
-					<form id="subscribeForm" class="subscribe">
+					<h3 class="section-title">Newsletter</h3>
+					<form
+						id="subscribeForm"
+						class="subscribe"
+						aria-label="Subscribe to newsletter"
+					>
+						<label for="subscribeEmail" class="sr-only"
+							>Email address</label
+						>
 						<input
 							id="subscribeEmail"
 							type="email"
 							placeholder="your@email.com"
 							required
+							aria-label="Email address"
 						/>
-						<button id="subscribeBtn" class="btn">Subscribe</button>
+						<button id="subscribeBtn" type="submit" class="btn">
+							Subscribe
+						</button>
+						<div class="subscribe-note muted">
+							No spam — unsubscribe anytime. We only store your
+							email locally.
+						</div>
 					</form>
 					<p id="subscribeMsg" class="muted" aria-live="polite"></p>
+					<p id="subCount" class="muted" aria-hidden="true"></p>
 				</div>
 				<div class="footer-right">
 					<nav class="footer-nav">

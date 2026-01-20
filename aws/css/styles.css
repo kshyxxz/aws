@@ -3,6 +3,7 @@
 
 :root {
 	--bg: #0b0c0e;
+	--bg-2: #050506;
 	--panel: #0f1113;
 	--muted: #9aa3ad;
 	--text: #e6eef3;
@@ -15,6 +16,7 @@
 
 [data-theme="light"] {
 	--bg: #f7f8fb;
+	--bg-2: #f5f7fb;
 	--panel: #ffffff;
 	--muted: #6b7280;
 	--text: #0b1220;
@@ -41,7 +43,7 @@ body {
 		Roboto,
 		"Helvetica Neue",
 		Arial;
-	background: linear-gradient(180deg, var(--bg), #050506);
+	background: linear-gradient(180deg, var(--bg), var(--bg-2));
 	color: var(--text);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -336,6 +338,45 @@ body {
 	background: transparent;
 	color: var(--text);
 }
+.sr-only {
+	position: absolute !important;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+	clip: rect(1px, 1px, 1px, 1px);
+	white-space: nowrap;
+	border: 0;
+	padding: 0;
+	margin: -1px;
+}
+.subscribe-note {
+	width: 100%;
+	font-size: 0.82rem;
+	margin-top: 6px;
+	opacity: 0.9;
+}
+.footer-center .section-title {
+	margin: 0 0 8px 0;
+	font-size: 1rem;
+}
+#subCount {
+	margin-top: 8px;
+	font-size: 0.85rem;
+	opacity: 0.9;
+}
+.subscribe-success {
+	color: #0b6623; /* green */
+}
+.subscribe-error {
+	color: #9b1c1c; /* red */
+}
+.subscribe input:focus {
+	outline: 2px solid rgba(0, 102, 255, 0.12);
+	border-color: rgba(0, 102, 255, 0.24);
+}
+.subscribe .btn {
+	padding: 8px 12px;
+}
 .footer-nav {
 	display: flex;
 	flex-direction: column;
@@ -347,6 +388,17 @@ body {
 }
 .footer-nav a:hover {
 	color: var(--text);
+}
+
+/* responsive tweaks for footer subscribe */
+@media (max-width: 800px) {
+	.subscribe {
+		flex-direction: column;
+		align-items: stretch;
+	}
+	.subscribe .btn {
+		width: 100%;
+	}
 }
 
 /* back to top */
